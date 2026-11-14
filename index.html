@@ -2,55 +2,65 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#090909">
-<meta name="description" content="Asemooh — The Stories Everyone Is Talking About. Trending Ghanaian news, entertainment and viral videos.">
-<title>Asemooh | The Stories Everyone Is Talking About</title>
+<title>Asemooh | Ghana News & Updates</title>
+<meta name="description" content="Asemooh brings you the latest news, headlines and trending stories from Ghana and beyond.">
 <style>
-:root{--bg:#090909;--panel:#151515;--white:#f7f7f7;--muted:#aaa;--red:#e31b2b;--line:#303030}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--white);font:16px/1.55 Arial,Helvetica,sans-serif}
-a{color:inherit;text-decoration:none}.wrap{width:min(1120px,92%);margin:auto}
-.top{background:var(--red);font-size:12px;font-weight:800;letter-spacing:.08em}.top .wrap{padding:8px 0}
-header{border-bottom:1px solid var(--line);background:#080808}.head{display:flex;align-items:center;justify-content:space-between;padding:16px 0;gap:20px}
-.brand img{width:190px;max-height:100px;object-fit:contain}.tag{color:var(--muted);font-size:11px;letter-spacing:2px;text-transform:uppercase}
-nav{display:flex;gap:20px;flex-wrap:wrap;font-weight:700;font-size:13px}nav a:hover{color:var(--red)}
-.hero{padding:45px 0 30px;display:grid;grid-template-columns:1.35fr .65fr;gap:22px}
-.hero-main{background:linear-gradient(120deg,#242424,#101010);border:1px solid var(--line);padding:36px;border-radius:12px;min-height:300px;display:flex;flex-direction:column;justify-content:end}
-.eyebrow,.category{color:#ff5965;font-size:11px;font-weight:900;letter-spacing:2px}
-h1{font-size:clamp(34px,5vw,58px);line-height:1.02;letter-spacing:-2px;margin:14px 0}
-.hero p,.about p{color:#c7c7c7;max-width:620px}.btn{display:inline-block;background:var(--red);padding:12px 18px;border-radius:5px;font-weight:800;font-size:13px;margin-top:10px}
-.hero-side{display:flex;flex-direction:column;gap:14px}.mini,.card,.about{background:var(--panel);border:1px solid var(--line);border-radius:9px}
-.mini{padding:20px;flex:1}.mini b{display:block;font-size:18px;margin:8px 0}
-.section{padding:20px 0 38px}.section-title{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);margin-bottom:18px;padding-bottom:12px}
-.section-title h2{font-size:22px;margin:0}.section-title h2:before{content:"";display:inline-block;width:5px;height:20px;background:var(--red);margin-right:10px;vertical-align:-3px}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{overflow:hidden}.thumb{height:145px;background:linear-gradient(135deg,#303030,#171717);display:flex;align-items:center;justify-content:center;color:#888;font-size:12px;letter-spacing:2px;font-weight:900}
-.cardbody{padding:16px}.card h3{font-size:18px;line-height:1.25;margin:8px 0}.meta{color:var(--muted);font-size:12px}
-.about{padding:24px}.socials{display:flex;gap:12px;flex-wrap:wrap}.socials a{border:1px solid #555;padding:10px 14px;border-radius:5px;font-size:13px;font-weight:800}.socials a:hover{border-color:var(--red);color:#ff5965}
-footer{border-top:1px solid var(--line);padding:26px 0;color:#999;font-size:12px}.foot{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}
-@media(max-width:720px){.head{align-items:flex-start;flex-direction:column}.hero{grid-template-columns:1fr;padding-top:25px}.hero-main{padding:24px;min-height:270px}.grid{grid-template-columns:1fr}nav{gap:13px}.brand img{width:160px}}
+:root{--ink:#101828;--muted:#667085;--line:#e4e7ec;--bg:#f5f7fa;--gold:#e6b84a}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Arial}
+header{background:#101828;color:#fff;padding:22px max(18px,calc((100% - 1120px)/2));border-bottom:4px solid var(--gold)}
+.brand{font-size:30px;font-weight:900;letter-spacing:1px}.tag{color:#d0d5dd;font-size:13px}
+nav{background:#fff;border-bottom:1px solid var(--line);padding:10px max(18px,calc((100% - 1120px)/2));font-size:13px;font-weight:700;color:#475467}
+main{max-width:1120px;margin:24px auto;padding:0 16px}.intro{margin:0 0 18px}.intro h1{font-size:25px;margin:0 0 4px}.intro p{margin:0;color:var(--muted)}
+#feed{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.card{background:#fff;border:1px solid var(--line);border-radius:13px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.media{width:100%;aspect-ratio:16/9;object-fit:cover;background:#e4e7ec}.cardbody{padding:15px;display:flex;flex-direction:column;flex:1}
+.type{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:#9a6b00}.card h2{font-size:19px;line-height:1.3;margin:6px 0}.excerpt{color:#475467;margin:0 0 14px;font-size:14px}
+.date{color:var(--muted);font-size:12px;margin-top:auto}.read{display:inline-block;margin-top:12px;color:#101828;font-weight:800;text-decoration:none}
+.empty{background:#fff;border:1px solid var(--line);padding:24px;border-radius:12px;color:var(--muted);grid-column:1/-1}
+article.full{max-width:820px;margin:0 auto;background:white;padding:24px;border:1px solid var(--line);border-radius:14px}
+article.full h1{font-size:clamp(26px,4vw,40px);line-height:1.15;margin:8px 0}
+article.full .story{white-space:pre-wrap;line-height:1.8;margin-top:20px}
+article.full img{width:100%;height:auto;max-height:520px;object-fit:cover;border-radius:10px;margin:16px 0}
+.back{display:inline-block;margin-bottom:16px;color:#101828;font-weight:700;text-decoration:none}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:32px 16px}
+@media(max-width:850px){#feed{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){#feed{grid-template-columns:1fr}.brand{font-size:26px}main{margin-top:18px}}
 </style>
 </head>
 <body>
-<div class="top"><div class="wrap">🔴 &nbsp; BREAKING NEWS &nbsp;—&nbsp; YOUR DAILY SOURCE FOR WHAT MATTERS</div></div>
-<header><div class="wrap head">
-<a class="brand" href="#home"><img src="assets/asemooh-logo.png" alt="Asemooh official logo"></a>
-<nav><a href="#home">HOME</a><a href="#news">NEWS</a><a href="#videos">VIDEOS</a><a href="#entertainment">ENTERTAINMENT</a><a href="#social">FOLLOW US</a></nav>
-</div></header>
-<main id="home" class="wrap">
-<section class="hero">
-<div class="hero-main"><div class="eyebrow">WELCOME TO ASEMOOH</div><h1>The Stories Everyone Is Talking About.</h1>
-<p>Your go-to hub for trending Ghanaian news, celebrity stories, viral videos and the latest updates from around the world.</p><div><a class="btn" href="#news">EXPLORE THE LATEST</a></div></div>
-<div class="hero-side"><div class="mini"><div class="eyebrow">GHANA & BEYOND</div><b>News that keeps you informed.</b><span class="meta">Fresh stories and important updates.</span></div>
-<div class="mini"><div class="eyebrow">WATCH & SHARE</div><b>Videos worth talking about.</b><span class="meta">Find Asemooh across your favourite platforms.</span></div></div>
-</section>
-<section id="news" class="section"><div class="section-title"><h2>Latest News</h2><span class="meta">ASEMOOH UPDATES</span></div><div class="grid">
-<article class="card"><div class="thumb">GHANA NEWS</div><div class="cardbody"><div class="category">GHANA NEWS</div><h3>Latest stories from Ghana</h3><p class="meta">News and updates from across the country.</p></div></article>
-<article class="card"><div class="thumb">WORLD NEWS</div><div class="cardbody"><div class="category">WORLD NEWS</div><h3>Stories making headlines worldwide</h3><p class="meta">Follow important developments around the world.</p></div></article>
-<article id="entertainment" class="card"><div class="thumb">ENTERTAINMENT</div><div class="cardbody"><div class="category">ENTERTAINMENT</div><h3>Celebrity news and trending conversations</h3><p class="meta">People, culture and stories everyone is discussing.</p></div></article>
-</div></section>
-<section id="videos" class="section"><div class="section-title"><h2>Watch Asemooh</h2><span class="meta">VIDEOS & REPORTS</span></div>
-<div class="about"><p>Watch our latest reports, trending clips and video updates. New videos will appear here as they are added to the Asemooh newsroom.</p><div class="socials"><a href="https://www.youtube.com/@Asemooh1" target="_blank" rel="noopener">▶ YouTube</a><a href="https://www.tiktok.com/@asemooh1" target="_blank" rel="noopener">♪ TikTok</a></div></div></section>
-<section id="social" class="section"><div class="section-title"><h2>Follow Asemooh</h2><span class="meta">STAY CONNECTED</span></div>
-<div class="socials"><a href="https://www.tiktok.com/@asemooh1" target="_blank" rel="noopener">TikTok</a><a href="https://www.youtube.com/@Asemooh1" target="_blank" rel="noopener">YouTube</a><a href="https://linktr.ee/asemooh" target="_blank" rel="noopener">All our links</a><a href="https://www.facebook.com/" target="_blank" rel="noopener">Facebook</a></div></section>
-<section class="section"><div class="about"><div class="eyebrow">ABOUT ASEMOOH</div><h2>Stories. Updates. Conversations.</h2><p>Asemooh brings together trending Ghanaian news, entertainment, viral videos and stories from around the world. Follow our channels and stay in the conversation.</p></div></section>
-</main><footer><div class="wrap foot"><span>© 2026 Asemooh. All rights reserved.</span><span>The Stories Everyone Is Talking About.</span></div></footer>
+<header><div class="brand">ASEMOOH</div><div class="tag">Ghana news · Trending stories · Current affairs</div></header>
+<nav>HOME　 /　 LATEST NEWS　 /　 GHANA & BEYOND</nav>
+<main>
+<section class="intro" id="intro"><h1>Latest News</h1><p>Stay informed with the stories making headlines.</p></section>
+<div id="feed"><div class="empty">Loading the latest Asemooh stories…</div></div>
+</main>
+<footer>© <span id="year"></span> Asemooh. All rights reserved.</footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./supabase-config.js"></script>
+<script>
+(async()=>{
+ const cfg=window.SUPABASE_CONFIG||window.supabaseConfig||window.supabase_config||{};
+ const url=cfg.url||cfg.supabaseUrl||window.SUPABASE_URL;
+ const key=cfg.anonKey||cfg.publishableKey||cfg.supabaseAnonKey||window.SUPABASE_ANON_KEY;
+ const feed=document.getElementById('feed');document.getElementById('year').textContent=new Date().getFullYear();
+ if(!url||!key){feed.innerHTML='<div class="empty">Asemooh is being configured. Please check back soon.</div>';return}
+ const db=window.supabase.createClient(url,key);
+ const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const date=s=>s?new Date(s).toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'}):'';
+ const params=new URLSearchParams(location.search),slug=params.get('story');
+ if(slug){
+   const {data,error}=await db.from('articles').select('title,slug,excerpt,body,content_type,image_url,video_url,created_at').eq('slug',slug).eq('status','published').maybeSingle();
+   if(error||!data){feed.innerHTML='<div class="empty">This story could not be found or is no longer available.</div>';return}
+   document.getElementById('intro').classList.add('hidden');
+   const video=data.video_url?`<p><a href="${esc(data.video_url)}" target="_blank" rel="noopener">Watch the video</a></p>`:'';
+   feed.style.display='block';
+   feed.innerHTML=`<article class="full"><a class="back" href="./">← Back to latest news</a><div class="type">${esc(data.content_type||'News')}</div><h1>${esc(data.title)}</h1><div class="date">${esc(date(data.created_at))}</div>${data.image_url?`<img src="${esc(data.image_url)}" alt="${esc(data.title)}">`:''}${video}<p class="excerpt">${esc(data.excerpt||'')}</p><div class="story">${esc(data.body||'')}</div></article>`;
+   document.title= data.title+' | Asemooh';return;
+ }
+ const {data,error}=await db.from('articles').select('title,slug,excerpt,content_type,image_url,created_at').eq('status','published').order('created_at',{ascending:false}).limit(30);
+ if(error){feed.innerHTML='<div class="empty">We could not load the news right now. Please refresh the page.</div>';return}
+ if(!data||!data.length){feed.innerHTML='<div class="empty">No published stories yet. New Asemooh updates will appear here.</div>';return}
+ feed.innerHTML=data.map(a=>`<article class="card">${a.image_url?`<img class="media" src="${esc(a.image_url)}" alt="${esc(a.title)}" loading="lazy">`:`<div class="media"></div>`}<div class="cardbody"><div class="type">${esc(a.content_type||'News')}</div><h2>${esc(a.title)}</h2><p class="excerpt">${esc(a.excerpt||'')}</p><div class="date">${esc(date(a.created_at))}</div><a class="read" href="?story=${encodeURIComponent(a.slug||'')}">Read story →</a></div></article>`).join('');
+})();
+</script>
 </body></html>
