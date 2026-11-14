@@ -1,0 +1,234 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Asemooh Admin</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      background: #111;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      max-width: 650px;
+      margin: 30px auto;
+    }
+    .panel {
+      background: #202020;
+      padding: 22px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+    h1, h2 { color: #fff; }
+    input, textarea, select, button {
+      box-sizing: border-box;
+      width: 100%;
+      padding: 13px;
+      margin: 8px 0;
+      border-radius: 6px;
+      border: 1px solid #555;
+      font-size: 16px;
+    }
+    input, textarea, select {
+      background: #303030;
+      color: white;
+    }
+    button {
+      background: #d71920;
+      color: white;
+      border: 0;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .hidden { display: none; }
+    .article {
+      border-bottom: 1px solid #555;
+      padding: 12px 0;
+    }
+    .muted { color: #bbb; }
+    #message { color: #ffb4b4; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>ASEMOOH ADMIN</h1>
+  <p class="muted">Manage your news and videos</p>
+
+  <section id="loginPanel" class="panel">
+    <h2>Admin Login</h2>
+    <form id="loginForm">
+      <input id="email" type="email" placeholder="Email address" required>
+      <input id="password" type="password" placeholder="Password" required>
+      <button type="submit">Log In</button>
+    </form>
+    <p id="message"></p>
+  </section>
+
+  <section id="dashboard" class="hidden">
+    <div class="panel">
+      <h2>Publish New Content</h2>
+      <form id="articleForm">
+        <input id="title" placeholder="Article or video title" required>
+        <input id="slug" placeholder="URL slug (e.g. latest-ghana-news)" required>
+        <textarea id="excerpt" placeholder="Short description"></textarea>
+        <textarea id="body" placeholder="Full news story"></textarea>
+
+        <select id="contentType">
+          <option value="news">News</option>
+          <option value="video">Video</option>
+        </select>
+
+        <input id="imageUrl" type="url" placeholder="Image URL (optional)">
+        <input id="videoUrl" type="url" placeholder="Video URL (optional)">
+
+        <select id="status">
+          <option value="draft">Save as Draft</option>
+          <option value="published">Publish Now</option>
+        </select>
+
+        <button type="submit">Save Content</button>
+      </form>
+      <p id="saveMessage"></p>
+    </div>
+
+    <div class="panel">
+      <h2>Your Articles and Videos</h2>
+      <div id="articleList">Loading...</div>
+    </div>
+
+    <button id="logoutButton">Log Out</button>
+  </section>
+</div>
+
+<script>
+  const message = document.getElementById("message");
+  const loginPanel = document.getElementById("loginPanel");
+  const dashboard = document.getElementById("dashboard");
+
+  async function checkUser() {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+
+    if (!session) {
+      loginPanel.classList.remove("hidden");
+      dashboard.classList.add("hidden");
+      return;
+    }
+
+    const { data: profile, error } = await supabaseClient
+      .from("profiles")
+      .select("role")
+      .eq("id", session.user.id)
+      .single();
+
+    if (error || !profile || !["admin", "editor"].includes(profile.role)) {
+      message.textContent = "This account does not have admin access.";
+      await supabaseClient.auth.signOut();
+      return;
+    }
+
+    loginPanel.classList.add("hidden");
+    dashboard.classList.remove("hidden");
+    loadArticles();
+  }
+
+  document.getElementById("loginForm").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    message.textContent = "Signing in...";
+
+    const { error } = await supabaseClient.auth.signInWithPassword({
+      email: document.getElementById("email").value,
+      password: document.getElementById("password").value
+    });
+
+    if (error) {
+      message.textContent = error.message;
+      return;
+    }
+
+    message.textContent = "";
+    checkUser();
+  });
+
+  document.getElementById("articleForm").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const saveMessage = document.getElementById("saveMessage");
+    saveMessage.textContent = "Saving...";
+
+    const { data: { user } } = await supabaseClient.auth.getUser();
+
+    const article = {
+      title: document.getElementById("title").value.trim(),
+      slug: document.getElementById("slug").value.trim(),
+      excerpt: document.getElementById("excerpt").value.trim(),
+      body: document.getElementById("body").value.trim(),
+      content_type: document.getElementById("contentType").value,
+      image_url: document.getElementById("imageUrl").value.trim() || null,
+      video_url: document.getElementById("videoUrl").value.trim() || null,
+      status: document.getElementById("status").value,
+      created_by: user.id
+    };
+
+    const { error } = await supabaseClient.from("articles").insert(article);
+
+    if (error) {
+      saveMessage.textContent = error.message;
+      return;
+    }
+
+    saveMessage.textContent = "Content saved successfully!";
+    document.getElementById("articleForm").reset();
+    loadArticles();
+  });
+
+  async function loadArticles() {
+    const list = document.getElementById("articleList");
+    list.textContent = "Loading...";
+
+    const { data, error } = await supabaseClient
+      .from("articles")
+      .select("title, content_type, status, created_at")
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      list.textContent = error.message;
+      return;
+    }
+
+    list.innerHTML = "";
+
+    if (!data.length) {
+      list.textContent = "No content yet. Create your first article above.";
+      return;
+    }
+
+    data.forEach(article => {
+      const item = document.createElement("div");
+      item.className = "article";
+
+      const title = document.createElement("strong");
+      title.textContent = article.title;
+
+      const details = document.createElement("p");
+      details.className = "muted";
+      details.textContent = article.content_type + " • " + article.status;
+
+      item.append(title, details);
+      list.appendChild(item);
+    });
+  }
+
+  document.getElementById("logoutButton").addEventListener("click", async () => {
+    await supabaseClient.auth.signOut();
+    location.reload();
+  });
+
+  checkUser();
+</script>
+</body>
+</html>
