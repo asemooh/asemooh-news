@@ -1,10 +1,7 @@
+// ASEMOOH SUPABASE CONFIGURATION
 
-const SUPABASE_URL = "https://rumdsenwkoqwwbjyvhop.supabase.co";
-
-const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_xWvvANqtxpd1oDJ9D0cywA_ql6Es8Co";
-
-const supabaseClient = window.SUPABASE_CONFIG = {
-  url: SUPABASE_URL,
-  anonKey: SUPABASE_PUBLISHABLE_KEY
+window.SUPABASE_CONFIG = {
+    url: "https://rumdsenwkoqwwbjyvhop.supabase.co",
+    anonKey: "sb_publishable_xWvvANqtxpd1oDJ9D0cywA_ql6Es8Co"
 };
 
