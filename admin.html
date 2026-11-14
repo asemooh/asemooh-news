@@ -1,234 +1,187 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Asemooh Admin</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="supabase-config.js"></script>
-  <style>
-    body {
-      margin: 0;
-      padding: 20px;
-      background: #111;
-      color: white;
-      font-family: Arial, sans-serif;
-    }
-    .container {
-      max-width: 650px;
-      margin: 30px auto;
-    }
-    .panel {
-      background: #202020;
-      padding: 22px;
-      border-radius: 12px;
-      margin-bottom: 20px;
-    }
-    h1, h2 { color: #fff; }
-    input, textarea, select, button {
-      box-sizing: border-box;
-      width: 100%;
-      padding: 13px;
-      margin: 8px 0;
-      border-radius: 6px;
-      border: 1px solid #555;
-      font-size: 16px;
-    }
-    input, textarea, select {
-      background: #303030;
-      color: white;
-    }
-    button {
-      background: #d71920;
-      color: white;
-      border: 0;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .hidden { display: none; }
-    .article {
-      border-bottom: 1px solid #555;
-      padding: 12px 0;
-    }
-    .muted { color: #bbb; }
-    #message { color: #ffb4b4; }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Asemooh | Newsroom Admin</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--ink:#101828;--muted:#667085;--line:#e4e7ec;--bg:#f5f7fa;--brand:#101828;--accent:#e6b84a;--white:#fff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial}
+header{background:#101828;color:white;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+header strong{font-size:22px;letter-spacing:.4px}header span{color:#d0d5dd;font-size:13px}
+main{max-width:1100px;margin:24px auto;padding:0 16px}.panel{background:white;border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:18px;box-shadow:0 2px 8px #1018280a}
+h1,h2{margin:0 0 14px}h1{font-size:24px}h2{font-size:19px}
+label{display:block;font-weight:650;margin:12px 0 5px}input,textarea,select{width:100%;padding:12px;border:1px solid #d0d5dd;border-radius:9px;font:inherit;background:#fff;color:var(--ink)}
+textarea{min-height:130px;resize:vertical}button{border:0;border-radius:9px;padding:11px 16px;font-weight:700;cursor:pointer;background:var(--brand);color:white}
+button.secondary{background:#eef2f6;color:#344054}button.danger{background:#b42318}button.gold{background:var(--accent);color:#101828}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.status{padding:10px 12px;border-radius:9px;background:#f2f4f7;color:#344054;margin:10px 0;white-space:pre-wrap}
+.status.error{background:#fef3f2;color:#b42318}.status.ok{background:#ecfdf3;color:#027a48}
+.article{border:1px solid var(--line);border-radius:10px;padding:14px;margin:10px 0;display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.article small{display:block;color:var(--muted);margin-top:4px}.article-actions{display:flex;gap:6px;flex-wrap:wrap}
+.hidden{display:none!important}.hint{color:var(--muted);font-size:13px}.topline{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+@media(max-width:700px){.grid{grid-template-columns:1fr}.article{display:block}.article-actions{margin-top:10px}}
+</style>
 </head>
 <body>
-<div class="container">
-  <h1>ASEMOOH ADMIN</h1>
-  <p class="muted">Manage your news and videos</p>
+<header><div><strong>ASEMOOH</strong><br><span>Newsroom control centre</span></div><span id="accountLabel">Not signed in</span></header>
+<main>
+<section class="panel" id="loginPanel">
+<h1>Admin sign in</h1>
+<p class="hint">Sign in with the email account already registered in your Asemooh Supabase project.</p>
+<label>Email</label><input id="email" type="email" autocomplete="username" placeholder="Your admin email">
+<label>Password</label><input id="password" type="password" autocomplete="current-password" placeholder="Password">
+<div class="actions"><button id="loginBtn">Sign in</button></div><div id="loginMsg" class="status">Connects to your existing Supabase project configuration.</div>
+</section>
 
-  <section id="loginPanel" class="panel">
-    <h2>Admin Login</h2>
-    <form id="loginForm">
-      <input id="email" type="email" placeholder="Email address" required>
-      <input id="password" type="password" placeholder="Password" required>
-      <button type="submit">Log In</button>
-    </form>
-    <p id="message"></p>
-  </section>
-
-  <section id="dashboard" class="hidden">
-    <div class="panel">
-      <h2>Publish New Content</h2>
-      <form id="articleForm">
-        <input id="title" placeholder="Article or video title" required>
-        <input id="slug" placeholder="URL slug (e.g. latest-ghana-news)" required>
-        <textarea id="excerpt" placeholder="Short description"></textarea>
-        <textarea id="body" placeholder="Full news story"></textarea>
-
-        <select id="contentType">
-          <option value="news">News</option>
-          <option value="video">Video</option>
-        </select>
-
-        <input id="imageUrl" type="url" placeholder="Image URL (optional)">
-        <input id="videoUrl" type="url" placeholder="Video URL (optional)">
-
-        <select id="status">
-          <option value="draft">Save as Draft</option>
-          <option value="published">Publish Now</option>
-        </select>
-
-        <button type="submit">Save Content</button>
-      </form>
-      <p id="saveMessage"></p>
-    </div>
-
-    <div class="panel">
-      <h2>Your Articles and Videos</h2>
-      <div id="articleList">Loading...</div>
-    </div>
-
-    <button id="logoutButton">Log Out</button>
-  </section>
+<section class="panel hidden" id="editorPanel">
+<div class="topline"><h1 id="formHeading">Create news article</h1><button class="secondary" id="newBtn">New article</button></div>
+<input id="articleId" type="hidden">
+<label>Article title</label><input id="title" maxlength="180" placeholder="Enter a clear news headline">
+<div class="grid">
+<div><label>Content type</label><select id="contentType"><option value="article">Article</option><option value="video">Video</option></select></div>
+<div><label>Publication status</label><select id="status"><option value="draft">Save as draft</option><option value="published">Publish now</option></select></div>
 </div>
+<label>Short summary</label><textarea id="excerpt" rows="3" placeholder="A short introduction shown on the homepage"></textarea>
+<label>Full story / article text</label><textarea id="body" placeholder="Write the full story here..."></textarea>
+<div class="grid">
+<div><label>Upload cover image (optional)</label><input id="imageFile" type="file" accept="image/*"><p class="hint" id="imageHint">Choose a JPG, PNG or WebP image.</p></div>
+<div><label>Upload video (optional)</label><input id="videoFile" type="file" accept="video/*"><p class="hint" id="videoHint">Choose an MP4 or supported video file.</p></div>
+</div>
+<label>Image URL (optional)</label><input id="imageUrl" type="url" placeholder="Filled automatically after upload, or paste an image URL">
+<label>Video URL (optional)</label><input id="videoUrl" type="url" placeholder="Filled automatically after upload, or paste a video URL">
+<div class="actions"><button class="gold" id="saveBtn">Save article</button><button class="secondary" id="cancelBtn">Clear form</button></div>
+<div id="editorMsg" class="status">Your draft is not public until you publish it.</div>
+</section>
 
+<section class="panel hidden" id="listPanel">
+<div class="topline"><h2>News articles</h2><button class="secondary" id="refreshBtn">Refresh list</button></div>
+<div id="articleList">Loading articles…</div>
+</section>
+</main>
+<script src="./supabase-config.js"></script>
 <script>
-  const message = document.getElementById("message");
-  const loginPanel = document.getElementById("loginPanel");
-  const dashboard = document.getElementById("dashboard");
+(() => {
+  const cfg = window.SUPABASE_CONFIG || window.supabaseConfig || window.supabase_config || {};
+  const url = cfg.url || cfg.supabaseUrl || window.SUPABASE_URL;
+  const key = cfg.anonKey || cfg.publishableKey || cfg.supabaseAnonKey || window.SUPABASE_ANON_KEY;
+  const $ = id => document.getElementById(id);
+  const show = (id, yes) => $(id).classList.toggle('hidden', !yes);
+  const msg = (id, text, type='') => { const el=$(id); el.textContent=text; el.className='status '+type; };
+  let client, currentUser=null, currentRole=null, imagePath='', videoPath='';
 
-  async function checkUser() {
-    const { data: { session } } = await supabaseClient.auth.getSession();
-
-    if (!session) {
-      loginPanel.classList.remove("hidden");
-      dashboard.classList.add("hidden");
-      return;
-    }
-
-    const { data: profile, error } = await supabaseClient
-      .from("profiles")
-      .select("role")
-      .eq("id", session.user.id)
-      .single();
-
-    if (error || !profile || !["admin", "editor"].includes(profile.role)) {
-      message.textContent = "This account does not have admin access.";
-      await supabaseClient.auth.signOut();
-      return;
-    }
-
-    loginPanel.classList.add("hidden");
-    dashboard.classList.remove("hidden");
-    loadArticles();
+  function slugify(s){return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,160)}
+  function resetForm(){
+    $('articleId').value=''; $('title').value=''; $('excerpt').value=''; $('body').value='';
+    $('contentType').value='article'; $('status').value='draft'; $('imageUrl').value=''; $('videoUrl').value='';
+    $('imageFile').value=''; $('videoFile').value=''; $('imageHint').textContent='Choose a JPG, PNG or WebP image.';
+    $('videoHint').textContent='Choose an MP4 or supported video file.';
+    imagePath=''; videoPath=''; $('formHeading').textContent='Create news article';
+    msg('editorMsg','Your draft is not public until you publish it.');
   }
-
-  document.getElementById("loginForm").addEventListener("submit", async (event) => {
-    event.preventDefault();
-    message.textContent = "Signing in...";
-
-    const { error } = await supabaseClient.auth.signInWithPassword({
-      email: document.getElementById("email").value,
-      password: document.getElementById("password").value
-    });
-
-    if (error) {
-      message.textContent = error.message;
-      return;
+  function configError(){
+    if(!url || !key) {
+      msg('loginMsg','Configuration not found. Keep your existing supabase-config.js in the same folder. It must define window.SUPABASE_CONFIG = { url: "https://YOURPROJECT.supabase.co", anonKey: "YOUR_PUBLISHABLE_KEY" }.','error');
+      return true;
     }
-
-    message.textContent = "";
-    checkUser();
-  });
-
-  document.getElementById("articleForm").addEventListener("submit", async (event) => {
-    event.preventDefault();
-    const saveMessage = document.getElementById("saveMessage");
-    saveMessage.textContent = "Saving...";
-
-    const { data: { user } } = await supabaseClient.auth.getUser();
-
-    const article = {
-      title: document.getElementById("title").value.trim(),
-      slug: document.getElementById("slug").value.trim(),
-      excerpt: document.getElementById("excerpt").value.trim(),
-      body: document.getElementById("body").value.trim(),
-      content_type: document.getElementById("contentType").value,
-      image_url: document.getElementById("imageUrl").value.trim() || null,
-      video_url: document.getElementById("videoUrl").value.trim() || null,
-      status: document.getElementById("status").value,
-      created_by: user.id
-    };
-
-    const { error } = await supabaseClient.from("articles").insert(article);
-
-    if (error) {
-      saveMessage.textContent = error.message;
-      return;
-    }
-
-    saveMessage.textContent = "Content saved successfully!";
-    document.getElementById("articleForm").reset();
-    loadArticles();
-  });
-
-  async function loadArticles() {
-    const list = document.getElementById("articleList");
-    list.textContent = "Loading...";
-
-    const { data, error } = await supabaseClient
-      .from("articles")
-      .select("title, content_type, status, created_at")
-      .order("created_at", { ascending: false });
-
-    if (error) {
-      list.textContent = error.message;
-      return;
-    }
-
-    list.innerHTML = "";
-
-    if (!data.length) {
-      list.textContent = "No content yet. Create your first article above.";
-      return;
-    }
-
-    data.forEach(article => {
-      const item = document.createElement("div");
-      item.className = "article";
-
-      const title = document.createElement("strong");
-      title.textContent = article.title;
-
-      const details = document.createElement("p");
-      details.className = "muted";
-      details.textContent = article.content_type + " • " + article.status;
-
-      item.append(title, details);
-      list.appendChild(item);
+    return false;
+  }
+  async function upload(file, folder){
+    if(!file) return null;
+    if(file.size > (folder==='images'?15:250)*1024*1024) throw new Error('File is too large for this uploader.');
+    const safe=file.name.replace(/[^a-zA-Z0-9._-]/g,'-');
+    const path=`${folder}/${Date.now()}-${crypto.randomUUID()}-${safe}`;
+    const {error}=await client.storage.from('asemooh-media').upload(path,file,{upsert:false,contentType:file.type || undefined});
+    if(error) throw error;
+    const {data}=client.storage.from('asemooh-media').getPublicUrl(path);
+    if(folder==='images') imagePath=path; else videoPath=path;
+    return data.publicUrl;
+  }
+  async function loadArticles(){
+    $('articleList').textContent='Loading articles…';
+    const {data,error}=await client.from('articles').select('id,title,status,content_type,created_at').order('created_at',{ascending:false}).limit(100);
+    if(error){$('articleList').textContent='Could not load articles: '+error.message;return}
+    if(!data.length){$('articleList').textContent='No articles yet. Create your first article above.';return}
+    $('articleList').innerHTML='';
+    data.forEach(a=>{
+      const wrap=document.createElement('div');wrap.className='article';
+      const info=document.createElement('div'); const title=document.createElement('strong');title.textContent=a.title||'(Untitled)';
+      const meta=document.createElement('small');meta.textContent=`${a.status||'draft'} · ${a.content_type||'article'} · ${a.created_at?new Date(a.created_at).toLocaleString():''}`;
+      info.append(title,meta);
+      const controls=document.createElement('div');controls.className='article-actions';
+      const edit=document.createElement('button');edit.className='secondary';edit.textContent='Edit';edit.onclick=()=>editArticle(a.id);
+      const toggle=document.createElement('button');toggle.className='gold';toggle.textContent=a.status==='published'?'Unpublish':'Publish';toggle.onclick=()=>toggleStatus(a.id,a.status);
+      const del=document.createElement('button');del.className='danger';del.textContent='Delete';del.onclick=()=>deleteArticle(a.id,a.title);
+      controls.append(edit,toggle,del);wrap.append(info,controls);$('articleList').append(wrap);
     });
   }
-
-  document.getElementById("logoutButton").addEventListener("click", async () => {
-    await supabaseClient.auth.signOut();
-    location.reload();
-  });
-
-  checkUser();
+  async function editArticle(id){
+    const {data,error}=await client.from('articles').select('*').eq('id',id).single();
+    if(error){msg('editorMsg','Could not open article: '+error.message,'error');return}
+    $('articleId').value=data.id; $('title').value=data.title||''; $('excerpt').value=data.excerpt||'';
+    $('body').value=data.body||''; $('contentType').value=data.content_type||'article'; $('status').value=data.status||'draft';
+    $('imageUrl').value=data.image_url||''; $('videoUrl').value=data.video_url||'';
+    $('formHeading').textContent='Edit news article'; imagePath='';videoPath='';
+    show('editorPanel',true);window.scrollTo({top:0,behavior:'smooth'});
+    msg('editorMsg','Editing existing article. Save to apply your changes.');
+  }
+  async function saveArticle(){
+    const title=$('title').value.trim();
+    if(!title){msg('editorMsg','Please enter an article title.','error');return}
+    $('saveBtn').disabled=true;$('saveBtn').textContent='Saving…';
+    try{
+      let imageUrl=$('imageUrl').value.trim(), videoUrl=$('videoUrl').value.trim();
+      if($('imageFile').files[0]) imageUrl=await upload($('imageFile').files[0],'images');
+      if($('videoFile').files[0]) videoUrl=await upload($('videoFile').files[0],'videos');
+      const payload={title,slug:slugify(title),excerpt:$('excerpt').value.trim(),body:$('body').value.trim(),
+        content_type:$('contentType').value,image_url:imageUrl||null,video_url:videoUrl||null,
+        status:$('status').value};
+      if(!$('articleId').value) payload.created_by=currentUser.id;
+      let request=$('articleId').value
+        ? client.from('articles').update(payload).eq('id',$('articleId').value)
+        : client.from('articles').insert(payload);
+      const {error}=await request;
+      if(error) throw error;
+      msg('editorMsg',$('status').value==='published'?'Article published successfully.':'Article saved successfully.','ok');
+      resetForm();await loadArticles();
+    }catch(e){msg('editorMsg','Save failed: '+(e.message||String(e)),'error')}
+    finally{$('saveBtn').disabled=false;$('saveBtn').textContent='Save article'}
+  }
+  async function toggleStatus(id,status){
+    const next=status==='published'?'draft':'published';
+    const {error}=await client.from('articles').update({status:next}).eq('id',id);
+    if(error){alert('Could not update status: '+error.message);return} await loadArticles();
+  }
+  async function deleteArticle(id,title){
+    if(!confirm(`Delete "${title}"? This cannot be undone.`))return;
+    const {error}=await client.from('articles').delete().eq('id',id);
+    if(error){alert('Could not delete: '+error.message);return} await loadArticles();
+  }
+  async function enterApp(user){
+    currentUser=user;
+    const {data:profile,error}=await client.from('profiles').select('role').eq('id',user.id).single();
+    if(error || !profile || !['admin','editor'].includes(profile.role)){
+      await client.auth.signOut();msg('loginMsg','This account does not have admin/editor access.','error');return;
+    }
+    currentRole=profile.role;$('accountLabel').textContent=`${user.email} · ${currentRole}`;
+    show('loginPanel',false);show('editorPanel',true);show('listPanel',true);await loadArticles();
+  }
+  $('loginBtn').onclick=async()=>{
+    if(configError())return;
+    msg('loginMsg','Signing in…');client=window.supabase.createClient(url,key);
+    const {data,error}=await client.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});
+    if(error){msg('loginMsg','Sign-in failed: '+error.message,'error');return}
+    await enterApp(data.user);
+  };
+  $('saveBtn').onclick=saveArticle;$('newBtn').onclick=resetForm;$('cancelBtn').onclick=resetForm;
+  $('refreshBtn').onclick=loadArticles;
+  $('imageFile').onchange=()=>{if($('imageFile').files[0])$('imageHint').textContent=$('imageFile').files[0].name};
+  $('videoFile').onchange=()=>{if($('videoFile').files[0])$('videoHint').textContent=$('videoFile').files[0].name};
+  if(!configError()){
+    client=window.supabase.createClient(url,key);
+    client.auth.getSession().then(({data})=>{if(data.session)enterApp(data.session.user)});
+    client.auth.onAuthStateChange((_event,session)=>{if(!session){currentUser=null;show('loginPanel',true);show('editorPanel',false);show('listPanel',false);$('accountLabel').textContent='Not signed in'}});
+  }
+})();
 </script>
-</body>
-</html>
+</body></html>
