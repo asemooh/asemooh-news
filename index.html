@@ -1,66 +1,265 @@
+
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Asemooh | Ghana News & Updates</title>
-<meta name="description" content="Asemooh brings you the latest news, headlines and trending stories from Ghana and beyond.">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Asemooh | Ghana News & Trending Stories</title>
+<meta name="description" content="Asemooh brings you the latest Ghana news, breaking headlines, current affairs and video updates.">
+<meta name="theme-color" content="#101828">
 <style>
-:root{--ink:#101828;--muted:#667085;--line:#e4e7ec;--bg:#f5f7fa;--gold:#e6b84a}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Arial}
-header{background:#101828;color:#fff;padding:22px max(18px,calc((100% - 1120px)/2));border-bottom:4px solid var(--gold)}
-.brand{font-size:30px;font-weight:900;letter-spacing:1px}.tag{color:#d0d5dd;font-size:13px}
-nav{background:#fff;border-bottom:1px solid var(--line);padding:10px max(18px,calc((100% - 1120px)/2));font-size:13px;font-weight:700;color:#475467}
-main{max-width:1120px;margin:24px auto;padding:0 16px}.intro{margin:0 0 18px}.intro h1{font-size:25px;margin:0 0 4px}.intro p{margin:0;color:var(--muted)}
-#feed{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
-.card{background:#fff;border:1px solid var(--line);border-radius:13px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
-.media{width:100%;aspect-ratio:16/9;object-fit:cover;background:#e4e7ec}.cardbody{padding:15px;display:flex;flex-direction:column;flex:1}
-.type{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:#9a6b00}.card h2{font-size:19px;line-height:1.3;margin:6px 0}.excerpt{color:#475467;margin:0 0 14px;font-size:14px}
-.date{color:var(--muted);font-size:12px;margin-top:auto}.read{display:inline-block;margin-top:12px;color:#101828;font-weight:800;text-decoration:none}
-.empty{background:#fff;border:1px solid var(--line);padding:24px;border-radius:12px;color:var(--muted);grid-column:1/-1}
-article.full{max-width:820px;margin:0 auto;background:white;padding:24px;border:1px solid var(--line);border-radius:14px}
-article.full h1{font-size:clamp(26px,4vw,40px);line-height:1.15;margin:8px 0}
-article.full .story{white-space:pre-wrap;line-height:1.8;margin-top:20px}
-article.full img{width:100%;height:auto;max-height:520px;object-fit:cover;border-radius:10px;margin:16px 0}
-.back{display:inline-block;margin-bottom:16px;color:#101828;font-weight:700;text-decoration:none}
-footer{text-align:center;color:var(--muted);font-size:12px;padding:32px 16px}
-@media(max-width:850px){#feed{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:560px){#feed{grid-template-columns:1fr}.brand{font-size:26px}main{margin-top:18px}}
+:root{--ink:#101828;--muted:#667085;--line:#e4e7ec;--bg:#f4f6f9;--gold:#e6b84a;--red:#c62828}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+a{color:inherit}
+.site-header{background:#101828;color:#fff;border-bottom:4px solid var(--gold)}
+.header-inner{max-width:1180px;margin:auto;padding:20px 18px;display:flex;align-items:center;justify-content:space-between;gap:18px}
+.brand{font-size:30px;font-weight:950;letter-spacing:1.5px;line-height:1}
+.tagline{color:#d0d5dd;font-size:13px;margin-top:7px}
+.header-note{font-size:12px;color:#f3d98e;text-align:right}
+.nav-wrap{background:#fff;border-bottom:1px solid var(--line)}
+.nav-inner{max-width:1180px;margin:auto;padding:0 18px;display:flex;align-items:center;gap:6px;overflow:auto}
+.nav-inner a{display:block;padding:13px 12px;text-decoration:none;font-size:13px;font-weight:800;white-space:nowrap}
+.nav-inner a:hover{color:#9a6b00}
+main{max-width:1180px;margin:26px auto;padding:0 18px}
+.breaking{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:9px;overflow:hidden;margin-bottom:24px}
+.breaking-label{background:var(--red);color:white;font-size:12px;font-weight:900;letter-spacing:.7px;padding:12px 15px;white-space:nowrap}
+.breaking-text{font-size:14px;font-weight:700;padding:9px 12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:27px 0 13px}
+.section-head h1,.section-head h2{font-size:23px;line-height:1.2;margin:0}
+.section-head p{color:var(--muted);font-size:13px;margin:5px 0 0}
+.section-kicker{color:#9a6b00;font-size:11px;font-weight:900;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px}
+.tools{display:flex;gap:9px;flex-wrap:wrap;margin:0 0 18px}
+.tools input,.tools select{min-height:43px;border:1px solid #d0d5dd;border-radius:8px;background:white;padding:9px 12px;font:inherit;color:var(--ink)}
+.tools input{flex:1;min-width:190px}
+.tools select{min-width:135px}
+.featured-grid{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(250px,1fr);gap:18px}
+.featured-card,.side-card,.news-card{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.featured-card{display:flex;flex-direction:column}
+.featured-image{width:100%;aspect-ratio:16/8;object-fit:cover;background:#e4e7ec}
+.featured-content{padding:19px}
+.label{display:inline-block;color:#946600;font-size:11px;font-weight:900;letter-spacing:.8px;text-transform:uppercase}
+.featured-content h2{font-size:clamp(23px,3vw,34px);line-height:1.17;margin:8px 0}
+.summary{color:#475467;margin:0 0 13px}
+.meta{font-size:12px;color:var(--muted)}
+.read-link{display:inline-block;margin-top:13px;font-weight:850;text-decoration:none}
+.read-link:hover{text-decoration:underline}
+.side-stack{display:grid;gap:14px}
+.side-card{display:grid;grid-template-columns:112px 1fr;min-height:112px}
+.side-card img{width:112px;height:100%;min-height:112px;object-fit:cover;background:#e4e7ec}
+.side-copy{padding:11px}
+.side-copy h3{font-size:15px;line-height:1.3;margin:5px 0}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px}
+.news-card{display:flex;flex-direction:column;min-width:0}
+.news-card img,.placeholder{width:100%;aspect-ratio:16/9;object-fit:cover;background:#e4e7ec}
+.news-copy{padding:14px;display:flex;flex-direction:column;flex:1}
+.news-copy h3{font-size:18px;line-height:1.3;margin:7px 0}
+.news-copy .summary{font-size:14px}
+.news-copy .meta{margin-top:auto}
+.video-card{position:relative}
+.video-card:before{content:"▶";position:absolute;top:12px;left:12px;background:#101828dd;color:white;border-radius:50%;width:35px;height:35px;display:grid;place-items:center;font-size:13px;padding-left:2px}
+.empty{grid-column:1/-1;background:white;border:1px solid var(--line);border-radius:10px;padding:22px;color:var(--muted)}
+.hidden{display:none!important}
+.story-view{max-width:850px;margin:0 auto;background:#fff;border:1px solid var(--line);border-radius:12px;padding:clamp(18px,4vw,34px)}
+.back{display:inline-block;margin-bottom:16px;text-decoration:none;font-weight:800}
+.story-view h1{font-size:clamp(27px,5vw,43px);line-height:1.12;margin:8px 0 12px}
+.story-image{width:100%;height:auto;max-height:540px;object-fit:cover;border-radius:9px;margin:18px 0}
+.story-body{white-space:pre-wrap;line-height:1.85;margin-top:20px;overflow-wrap:anywhere}
+.video-link{display:inline-block;background:#101828;color:#fff;text-decoration:none;font-weight:800;padding:11px 15px;border-radius:8px;margin:10px 0}
+footer{margin-top:45px;background:#101828;color:#d0d5dd;text-align:center;padding:27px 18px;font-size:12px}
+footer strong{color:#fff}
+@media(max-width:850px){.featured-grid{grid-template-columns:1fr}.side-stack{grid-template-columns:repeat(2,minmax(0,1fr))}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.header-inner{align-items:flex-start;flex-direction:column}.header-note{text-align:left}.brand{font-size:27px}.side-stack,.grid{grid-template-columns:1fr}.side-card{grid-template-columns:105px 1fr}.side-card img{width:105px}.section-head{align-items:flex-start;flex-direction:column}.breaking{gap:0}.breaking-label{padding:12px 10px;font-size:10px}.breaking-text{font-size:12px}}
 </style>
 </head>
 <body>
-<header><div class="brand">ASEMOOH</div><div class="tag">Ghana news · Trending stories · Current affairs</div></header>
-<nav>HOME　 /　 LATEST NEWS　 /　 GHANA & BEYOND</nav>
+<header class="site-header">
+<div class="header-inner">
+<div><div class="brand">ASEMOOH</div><div class="tagline">Ghana News · Trending Stories · Current Affairs</div></div>
+<div class="header-note">YOUR SOURCE FOR THE LATEST UPDATES</div>
+</div>
+</header>
+
+<div class="nav-wrap">
+<nav class="nav-inner">
+<a href="./">HOME</a>
+<a href="#latest">LATEST NEWS</a>
+<a href="#videos">VIDEO NEWS</a>
+<a href="#ghana">GHANA & BEYOND</a>
+</nav>
+</div>
+
 <main>
-<section class="intro" id="intro"><h1>Latest News</h1><p>Stay informed with the stories making headlines.</p></section>
-<div id="feed"><div class="empty">Loading the latest Asemooh stories…</div></div>
+<div class="breaking">
+<span class="breaking-label">LATEST UPDATE</span>
+<span class="breaking-text" id="breakingText">Bringing you the latest stories from Ghana and beyond.</span>
+</div>
+
+<section id="homeView">
+<div class="section-head">
+<div><div class="section-kicker">Top stories</div><h1>Top News Today</h1><p>Important stories and updates, all in one place.</p></div>
+</div>
+
+<div id="featured" class="featured-grid">
+<div class="empty">Loading Asemooh news…</div>
+</div>
+
+<section id="latest">
+<div class="section-head">
+<div><div class="section-kicker">Stay informed</div><h2>Latest News</h2><p>Browse the newest stories published by Asemooh.</p></div>
+</div>
+
+<div class="tools">
+<input id="searchInput" type="search" placeholder="Search headlines and stories…" aria-label="Search news">
+<select id="typeFilter" aria-label="Filter by content type">
+<option value="all">All content</option>
+<option value="news">Articles</option>
+<option value="video">Videos</option>
+</select>
+</div>
+<div id="newsGrid" class="grid"><div class="empty">Loading latest stories…</div></div>
+</section>
+
+<section id="videos">
+<div class="section-head">
+<div><div class="section-kicker">Watch and share</div><h2>Video News</h2><p>Latest video updates from Asemooh.</p></div>
+</div>
+<div id="videoGrid" class="grid"><div class="empty">Loading video updates…</div></div>
+</section>
+</section>
+
+<section id="storyView" class="hidden"></section>
 </main>
-<footer>© <span id="year"></span> Asemooh. All rights reserved.</footer>
+
+<footer>© <span id="year"></span> <strong>ASEMOOH</strong>. All rights reserved.</footer>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="./supabase-config.js"></script>
 <script>
 (async()=>{
- const cfg=window.SUPABASE_CONFIG||window.supabaseConfig||window.supabase_config||{};
- const url=cfg.url||cfg.supabaseUrl||window.SUPABASE_URL;
- const key=cfg.anonKey||cfg.publishableKey||cfg.supabaseAnonKey||window.SUPABASE_ANON_KEY;
- const feed=document.getElementById('feed');document.getElementById('year').textContent=new Date().getFullYear();
- if(!url||!key){feed.innerHTML='<div class="empty">Asemooh is being configured. Please check back soon.</div>';return}
- const db=window.supabase.createClient(url,key);
- const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
- const date=s=>s?new Date(s).toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'}):'';
- const params=new URLSearchParams(location.search),slug=params.get('story');
- if(slug){
-   const {data,error}=await db.from('articles').select('title,slug,excerpt,body,content_type,image_url,video_url,created_at').eq('slug',slug).eq('status','published').maybeSingle();
-   if(error||!data){feed.innerHTML='<div class="empty">This story could not be found or is no longer available.</div>';return}
-   document.getElementById('intro').classList.add('hidden');
-   const video=data.video_url?`<p><a href="${esc(data.video_url)}" target="_blank" rel="noopener">Watch the video</a></p>`:'';
-   feed.style.display='block';
-   feed.innerHTML=`<article class="full"><a class="back" href="./">← Back to latest news</a><div class="type">${esc(data.content_type||'News')}</div><h1>${esc(data.title)}</h1><div class="date">${esc(date(data.created_at))}</div>${data.image_url?`<img src="${esc(data.image_url)}" alt="${esc(data.title)}">`:''}${video}<p class="excerpt">${esc(data.excerpt||'')}</p><div class="story">${esc(data.body||'')}</div></article>`;
-   document.title= data.title+' | Asemooh';return;
- }
- const {data,error}=await db.from('articles').select('title,slug,excerpt,content_type,image_url,created_at').eq('status','published').order('created_at',{ascending:false}).limit(30);
- if(error){feed.innerHTML='<div class="empty">We could not load the news right now. Please refresh the page.</div>';return}
- if(!data||!data.length){feed.innerHTML='<div class="empty">No published stories yet. New Asemooh updates will appear here.</div>';return}
- feed.innerHTML=data.map(a=>`<article class="card">${a.image_url?`<img class="media" src="${esc(a.image_url)}" alt="${esc(a.title)}" loading="lazy">`:`<div class="media"></div>`}<div class="cardbody"><div class="type">${esc(a.content_type||'News')}</div><h2>${esc(a.title)}</h2><p class="excerpt">${esc(a.excerpt||'')}</p><div class="date">${esc(date(a.created_at))}</div><a class="read" href="?story=${encodeURIComponent(a.slug||'')}">Read story →</a></div></article>`).join('');
+const cfg=window.SUPABASE_CONFIG||window.supabaseConfig||window.supabase_config||{};
+const url=cfg.url||cfg.supabaseUrl||window.SUPABASE_URL;
+const key=cfg.anonKey||cfg.publishableKey||cfg.supabaseAnonKey||window.SUPABASE_ANON_KEY;
+const $=id=>document.getElementById(id);
+$('year').textContent=new Date().getFullYear();
+
+const esc=value=>String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+const date=value=>value?new Date(value).toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'}):'';
+const storyUrl=slug=>'./?story='+encodeURIComponent(slug||'');
+const imageMarkup=(url,title,cls='')=>url?'<img class="'+cls+'" src="'+esc(url)+'" alt="'+esc(title)+'" loading="lazy">':'<div class="'+(cls||'placeholder')+'"></div>';
+
+if(!url||!key){
+$('featured').innerHTML='<div class="empty">Asemooh is being configured. Please check back soon.</div>';
+return;
+}
+
+const db=window.supabase.createClient(url,key);
+const params=new URLSearchParams(location.search);
+const storySlug=params.get('story');
+
+if(storySlug){
+$('homeView').classList.add('hidden');
+const {data,error}=await db.from('articles').select('title,slug,excerpt,body,content_type,image_url,video_url,created_at').eq('slug',storySlug).eq('status','published').maybeSingle();
+
+if(error||!data){
+$('storyView').classList.remove('hidden');
+$('storyView').innerHTML='<div class="empty">This story could not be found or is no longer available.</div>';
+return;
+}
+
+$('storyView').classList.remove('hidden');
+document.title=data.title+' | Asemooh';
+$('storyView').innerHTML=
+'<article class="story-view">'+
+'<a class="back" href="./">← Back to latest news</a>'+
+'<div class="label">'+esc(data.content_type==='video'?'Video News':'News')+'</div>'+
+'<h1>'+esc(data.title)+'</h1>'+
+'<div class="meta">'+esc(date(data.created_at))+'</div>'+
+(data.image_url?'<img class="story-image" src="'+esc(data.image_url)+'" alt="'+esc(data.title)+'">':'')+
+(data.video_url?'<p><a class="video-link" href="'+esc(data.video_url)+'" target="_blank" rel="noopener">▶ Watch video</a></p>':'')+
+(data.excerpt?'<p class="summary">'+esc(data.excerpt)+'</p>':'')+
+'<div class="story-body">'+esc(data.body||'')+'</div>'+
+'</article>';
+return;
+}
+
+const {data,error}=await db.from('articles').select('title,slug,excerpt,content_type,image_url,video_url,created_at').eq('status','published').order('created_at',{ascending:false}).limit(100);
+
+if(error){
+$('featured').innerHTML='<div class="empty">We could not load the news. Please refresh the page.</div>';
+return;
+}
+
+const articles=data||[];
+if(!articles.length){
+$('featured').innerHTML='<div class="empty">No published stories yet. New Asemooh updates will appear here.</div>';
+$('newsGrid').innerHTML='';
+$('videoGrid').innerHTML='<div class="empty">No video updates published yet.</div>';
+return;
+}
+
+const featured=articles[0];
+$('breakingText').textContent=featured.title;
+
+$('featured').innerHTML=
+'<article class="featured-card">'+
+imageMarkup(featured.image_url,featured.title,'featured-image')+
+'<div class="featured-content">'+
+'<div class="label">Featured '+(featured.content_type==='video'?'Video':'Story')+'</div>'+
+'<h2>'+esc(featured.title)+'</h2>'+
+'<p class="summary">'+esc(featured.excerpt||'Read the latest update from Asemooh.')+'</p>'+
+'<div class="meta">'+esc(date(featured.created_at))+'</div>'+
+'<a class="read-link" href="'+storyUrl(featured.slug)+'">Read full story →</a>'+
+'</div></article>'+
+'<div class="side-stack">'+
+articles.slice(1,4).map(a=>
+'<article class="side-card">'+
+imageMarkup(a.image_url,a.title)+
+'<div class="side-copy"><div class="label">'+(a.content_type==='video'?'Video':'News')+'</div>'+
+'<h3>'+esc(a.title)+'</h3>'+
+'<a class="read-link" href="'+storyUrl(a.slug)+'">Read story →</a></div>'+
+'</article>'
+).join('')+
+'</div>';
+
+const newsGrid=$('newsGrid');
+const videoGrid=$('videoGrid');
+
+const renderCard=a=>
+'<article class="news-card '+(a.content_type==='video'?'video-card':'')+'">'+
+imageMarkup(a.image_url,a.title)+
+'<div class="news-copy">'+
+'<div class="label">'+(a.content_type==='video'?'Video News':'Article')+'</div>'+
+'<h3>'+esc(a.title)+'</h3>'+
+'<p class="summary">'+esc(a.excerpt||'')+'</p>'+
+'<div class="meta">'+esc(date(a.created_at))+'</div>'+
+'<a class="read-link" href="'+storyUrl(a.slug)+'">Read more →</a>'+
+(a.content_type==='video'&&a.video_url?'<a class="read-link" href="'+esc(a.video_url)+'" target="_blank" rel="noopener">▶ Watch video</a>':'')+
+'</div></article>';
+
+function render(){
+const q=$('searchInput').value.trim().toLowerCase();
+const type=$('typeFilter').value;
+
+const filtered=articles.filter(a=>
+(type==='all'||(a.content_type||'news')===type)&&
+(!q||[a.title,a.excerpt].some(v=>String(v||'').toLowerCase().includes(q)))
+);
+
+newsGrid.innerHTML=filtered.length?filtered.map(renderCard).join(''):'<div class="empty">No stories match your search.</div>';
+
+const videos=articles.filter(a=>
+a.content_type==='video'&&
+(!q||[a.title,a.excerpt].some(v=>String(v||'').toLowerCase().includes(q)))
+);
+
+videoGrid.innerHTML=videos.length?videos.map(renderCard).join(''):'<div class="empty">No video updates published yet.</div>';
+}
+
+$('searchInput').addEventListener('input',render);
+$('typeFilter').addEventListener('change',render);
+render();
 })();
 </script>
-</body></html>
+</body>
+</html>
